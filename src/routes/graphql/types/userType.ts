@@ -7,7 +7,6 @@ import {
   GraphQLString,
 } from 'graphql';
 import { UUIDType } from './uuid.js';
-import { PrismaClient } from '@prisma/client/extension';
 import { profileType } from './profileType.js';
 import { postType } from './postType.js';
 
@@ -47,7 +46,7 @@ export const userType = new GraphQLObjectType({
 
     userSubscribedTo: {
       type: new GraphQLList(userType),
-      resolve: async ({ id }, _args, context: PrismaClient) => {
+      resolve: async ({ id }, _args, context) => {
         return context.user.findMany({
           where: {
             subscribedToUser: {
@@ -62,7 +61,7 @@ export const userType = new GraphQLObjectType({
 
     subscribedToUser: {
       type: new GraphQLList(userType),
-      resolve: async ({ id }, _args, context: PrismaClient) => {
+      resolve: async ({ id }, _args, context) => {
         return context.user.findMany({
           where: {
             userSubscribedTo: {
